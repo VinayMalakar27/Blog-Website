@@ -19,12 +19,17 @@ const PORT = process.env.PORT || 3000;
 
 mongoose
   .connect(process.env.MONGO_URL)
-  .then((e) => console.log("MongoDB Connected"));
+  .then(() => console.log("✅ MongoDB Connected"))
+  .catch((err) => {
+    console.error("❌ MongoDB connection failed:", err.message);
+    process.exit(1); 
+  });
+
 
 app.set("view engine", "ejs");
 app.set("views", path.resolve("./views"));
 
-app.use(express.urlencoded({ extends: false }));
+app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cookieParser());
 app.use(checkForAuthenticationCookie("token"));
